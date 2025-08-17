@@ -316,7 +316,7 @@
 <header>
   <h1>Huerto Inteligente <span>Sistema Modular de Monitoreo</span></h1>
   <p>Tecnología para una agricultura más eficiente y sostenible</p>
-  <a href="#proyecto" class="button-primary">Conocer más</a>
+  <a class="button-primary">Conocer más</a>
 </header>
 
 <main>
