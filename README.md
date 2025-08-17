@@ -315,7 +315,7 @@
 <header>
   <h1>Huerto Inteligente <span>Sistema Modular de Monitoreo</span></h1>
   <p>Tecnología para una agricultura más eficiente y sostenible</p>
-  <a class="button-primary">Conocer más</a>
+  <a href="#proyecto" class="button-primary">Conocer más</a>
 </header>
 
 <main>
@@ -377,9 +377,10 @@
   </section>
 
   <section aria-label="Galería" class="gallery">
-   <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDJX_pk116vnAv8V04KAein3ePKEe6_can7Q&s" alt="Imagen 1" /></a>
-    <a href="#"><urlimagen" alt="Imagen 2" /></a>
-    <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaNEoqOkfFGAvi10HKTFoSX3Bx4RUozB5AVA&s" alt="Imagen 3" /></a>
+    <h2>Galería</h2>
+    <a href="#"><img src="https://via.placeholder.com/100?text=Imagen1" alt="Imagen 1" /></a>
+    <a href="#"><img src="https://via.placeholder.com/100?text=Imagen2" alt="Imagen 2" /></a>
+    <a href="#"><img src="https://via.placeholder.com/100?text=Imagen3" alt="Imagen 3" /></a>
   </section>
 
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
@@ -764,174 +765,6 @@
     }
   }
 
-  <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Huerto Inteligente - Sistema Modular de Monitoreo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <style>
-    /* Aquí va todo tu CSS (omitido para brevedad, ya lo tienes completo y correcto) */
-    /* ... */
-  </style>
-</head>
-<body>
-
-<button id="langSwitch" aria-label="Cambiar idioma">EN</button>
-
-<header>
-  <h1>Huerto Inteligente <span>Sistema Modular de Monitoreo</span></h1>
-  <p>Tecnología para una agricultura más eficiente y sostenible</p>
-  <a href="#proyecto" class="button-primary">Conocer más</a>
-</header>
-
-<main>
-  <!-- Secciones: Proyecto, Visión, Ventajas, Impacto, Equipo, Galería, Sensor, FAQ, Contacto -->
-  <!-- Ya las tienes completas y bien estructuradas -->
-  <!-- ... -->
-</main>
-
-<footer>
-  <div class="social-icons">
-    <!-- Íconos de redes sociales -->
-  </div>
-  <p>© 2025 Sistema Modular Inteligente para Monitoreo de Humedad en Huertos</p>
-</footer>
-
-<button id="topBtn" aria-label="Volver arriba">↑</button>
-
-<!-- Librerías -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-
-<script>
-  // Tu objeto de textos en español e inglés
-  const texts = {
-    es: { /* ... */ },
-    en: { /* ... */ }
-  };
-
-  let lang = 'es';
-  const topBtn = document.getElementById('topBtn');
-  const langSwitch = document.getElementById('langSwitch');
-
-  function updateTexts() {
-    document.title = texts[lang].title;
-    // Actualiza todas las secciones dinámicamente
-    // ... (ya lo tienes completo)
-  }
-
-  if(langSwitch){
-    langSwitch.addEventListener('click', () => {
-      lang = lang === 'es' ? 'en' : 'es';
-      document.documentElement.lang = lang;
-      updateTexts();
-    });
-  }
-
-  window.addEventListener('scroll', () => {
-    if(topBtn){
-      topBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
-    }
-  });
-
-  if(topBtn){
-    topBtn.addEventListener('click', () => {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    });
-  }
-
-  // Galería animada
-  const images = document.querySelectorAll('.gallery img');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.2 });
-  images.forEach(img => observer.observe(img));
-
-  // Lightbox
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  document.querySelectorAll('.gallery a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      if(lightbox && lightboxImg){
-        lightbox.style.display = 'flex';
-        lightboxImg.src = link.querySelector('img').src;
-        lightboxImg.alt = link.querySelector('img').alt;
-      }
-    });
-  });
-  if(lightbox){
-    lightbox.addEventListener('click', () => {
-      lightbox.style.display = 'none';
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') lightbox.style.display = 'none';
-    });
-  }
-
-  // Sensor + gráfico
-  const sensorDataDiv = document.getElementById('sensorData');
-  const ctx = document.getElementById('humidityChart')?.getContext('2d');
-  let labels = [], dataPoints = [], maxPoints = 12;
-
-  const humidityChart = ctx ? new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: lang === 'es' ? 'Humedad (%)' : 'Humidity (%)',
-        data: dataPoints,
-        borderColor: '#43a047',
-        backgroundColor: 'rgba(67, 160, 71, 0.2)',
-        tension: 0.3,
-        fill: true,
-        pointRadius: 4,
-        pointHoverRadius: 7,
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { min: 0, max: 100, ticks: { stepSize: 10 } }
-      },
-      plugins: {
-        legend: { display: true, labels: {color: '#2e7d32'} }
-      }
-    }
-  }) : null;
-
-  function getRandomHumidity() {
-    return (30 + Math.random() * 40).toFixed(1);
-  }
-
-  function updateSensorData() {
-    const humidity = getRandomHumidity();
-    const now = new Date();
-    const timeLabel = now.toLocaleTimeString();
-
-    if(sensorDataDiv) sensorDataDiv.textContent = humidity + (lang === 'es' ? ' % Humedad' : ' % Humidity');
-
-    if(labels.length >= maxPoints) {
-      labels.shift();
-      dataPoints.shift();
-    }
-    labels.push(timeLabel);
-    dataPoints.push(humidity);
-
-    if(humidityChart) {
-      humidityChart.data.labels = labels;
-      humidityChart.data.datasets[0].label = lang === 'es' ? 'Humedad (%)' : 'Humidity (%)';
-      humidityChart.data.datasets[0].data = dataPoints;
-      humidityChart.update();
-    }
-  }
-
   updateTexts();
   updateSensorData();
   setInterval(updateSensorData, 5000);
@@ -954,8 +787,10 @@
     });
   });
 
-  // EmailJS
+  // EmailJS init
   emailjs.init("WvlxNjRXrVa36vEQ4");
+
+  // Enviar formulario contacto
   const contactForm = document.getElementById('contactForm');
   const formMessage = document.getElementById('formMessage');
 
@@ -963,7 +798,6 @@
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
       formMessage.textContent = texts[lang].contactoSending;
-      formMessage.style.color = '#2e7d32';
 
       emailjs.sendForm('service_mc5m6mt', 'template_x2rqp4l', this)
         .then(() => {
@@ -971,7 +805,6 @@
           contactForm.reset();
         }, (error) => {
           formMessage.textContent = texts[lang].contactoError;
-          formMessage.style.color = 'red';
           console.error('Error:', error);
         });
     });
