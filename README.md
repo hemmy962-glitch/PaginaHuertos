@@ -1,770 +1,4 @@
-<html lang="es">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Huerto Inteligente - Sistema Modular de Monitoreo</title>
-<style>
-  /* Reset y estilos base */
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background-color: #f4f8f5;
-    color: #333;
-    scroll-behavior: smooth;
-    line-height: 1.6;
-  }
-  a {
-    text-decoration: none;
-    color: #2e7d32;
-  }
-  a:hover, button:hover {
-    color: #43a047;
-  }
-  header, footer {
-    background: linear-gradient(to right, #43a047, #2e7d32);
-    color: white;
-    text-align: center;
-    padding: 80px 20px;
-  }
-  header h1 {
-    font-size: 3.5rem;
-    margin-bottom: 10px;
-    font-weight: 700;
-  }
-  header h1 span {
-    display: block;
-    font-size: 1.6rem;
-    font-weight: 400;
-    margin-top: 5px;
-    color: #a5d6a7;
-    font-style: italic;
-  }
-  header a.button-primary {
-    background: white;
-    color: #2e7d32;
-    padding: 12px 25px;
-    border-radius: 30px;
-    font-weight: bold;
-    transition: background 0.3s, transform 0.2s;
-    display: inline-block;
-  }
-  header a.button-primary:hover {
-    background: #c8e6c9;
-    transform: scale(1.05);
-  }
-  section {
-    padding: 60px 20px;
-    max-width: 1100px;
-    margin: auto;
-  }
-  h2 {
-    color: #2e7d32;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  .card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-    gap: 20px;
-  }
-  .card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-  }
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  .card img {
-    width: 50px;
-    margin-bottom: 10px;
-  }
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-    gap: 15px;
-  }
-  .gallery img {
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease;
-  }
-  .gallery img.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  #lightbox {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.8);
-    display:none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  #lightbox img {
-    max-width: 90%;
-    max-height: 80%;
-    border-radius: 8px;
-  }
-  #lightbox:target {
-    display: flex;
-  }
-  #sensorData {
-    background: #e8f5e9;
-    border: 2px solid #43a047;
-    padding: 30px;
-    margin: 40px auto;
-    max-width: 300px;
-    text-align: center;
-    border-radius: 15px;
-    font-weight: 700;
-    font-size: 2rem;
-    color: #2e7d32;
-  }
-  /* Equipo */
-  .team-member {
-    background: white;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-  .team-member h3 {
-    margin-top: 10px;
-    color: #2e7d32;
-  }
-  .team-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  /* Contacto */
-  form {
-    max-width: 500px;
-    margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-  form label {
-    display: block;
-    margin: 15px 0 5px;
-  }
-  form input, form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #43a047;
-    border-radius: 8px;
-    resize: vertical;
-  }
-  form button {
-    margin-top: 20px;
-    background: #43a047;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-  }
-  form button:hover {
-    background: #2e7d32;
-    transform: scale(1.05);
-  }
-  /* FAQ */
-  .faq-container {
-    max-width: 700px;
-    margin: auto;
-  }
-  .faq-item {
-    background: white;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    overflow: hidden;
-  }
-  .faq-question {
-    padding: 15px 20px;
-    cursor: pointer;
-    background: #e8f5e9;
-    font-weight: 600;
-    color: #2e7d32;
-    position: relative;
-  }
-  .faq-question::after {
-    content: '+';
-    position: absolute;
-    right: 20px;
-    font-size: 1.5rem;
-    transition: transform 0.3s;
-  }
-  .faq-question.active::after {
-    content: '-';
-  }
-  .faq-answer {
-    max-height: 0;
-    padding: 0 20px;
-    transition: max-height 0.35s ease;
-    overflow: hidden;
-    background: white;
-  }
-  .faq-answer p {
-    margin: 15px 0;
-  }
-  /* Redes sociales footer */
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-top: 15px;
-  }
-  .social-icons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background-color: #2e7d32;
-    transition: background-color 0.3s, transform 0.3s;
-  }
-  .social-icons a img {
-    width: 24px;
-    height: 24px;
-    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
-  }
-  .social-icons a:hover {
-    background-color: #a5d6a7;
-    transform: scale(1.15);
-    filter: invert(30%) sepia(40%) saturate(300%) hue-rotate(80deg) brightness(90%) contrast(90%);
-  }
-  footer p {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #dcedc8;
-  }
-  /* Botón volver arriba */
-  #topBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #43a047;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    cursor: pointer;
-    display: none;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    z-index: 999;
-  }
-  /* Idioma */
-  #langSwitch {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background: #43a047;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    z-index: 999;
-    user-select: none;
-  }
-  /* Microinteracciones */
-  button, a.button-primary {
-    transition: background-color 0.3s, color 0.3s, transform 0.2s;
-  }
-  button:hover, a.button-primary:hover {
-    transform: scale(1.05);
-  }
-  /* Responsive */
-  @media(max-width: 600px) {
-    .team-container {
-      flex-direction: column;
-      align-items: center;
-    }
-  }
-</style>
-</head>
-<body>
-
-<button id="langSwitch" aria-label="Cambiar idioma">EN</button>
-
-<header>
-  <h1>Huerto Inteligente <span>Sistema Modular de Monitoreo</span></h1>
-  <p>Tecnología para una agricultura más eficiente y sostenible</p>
-  <a class="button-primary">Conocer más</a>
-</header>
-
-<main>
-  <section id="proyecto" aria-label="Descripción del Proyecto">
-    <h2>Proyecto</h2>
-    <p>Este sistema inteligente, modular y de bajo costo permite monitorear la humedad del suelo en huertos mediante sensores IoT, conectividad local y remota, y una plataforma web segura y responsiva. Facilita la toma de decisiones para el riego y cuidado de cultivos, optimizando el uso del agua y reduciendo el riesgo por exceso o déficit hídrico.</p>
-  </section>
-
-  <section aria-label="Visión del Proyecto">
-    <h2>Visión</h2>
-    <p>Visualizamos un futuro donde nuestro sistema modular sea ampliamente adoptado por pequeños productores y escuelas, permitiendo una agricultura más inteligente, sostenible y adaptada a las necesidades cambiantes del sector. La flexibilidad para agregar más sensores o módulos hace posible la expansión y mejora continua, garantizando soluciones a medida para distintos cultivos y escenarios.</p>
-  </section>
-
-  <section aria-label="Ventajas del proyecto">
-    <h2>Ventajas</h2>
-    <div class="card-container">
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000" alt="Icono Modular" />
-        <h3>Modular</h3>
-        <p>Fácil de escalar y adaptar a diferentes huertos.</p>
-      </div>
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000" alt="Icono Monitoreo Remoto" />
-        <h3>Monitoreo Remoto</h3>
-        <p>Consulta datos en tiempo real desde cualquier lugar.</p>
-      </div>
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/fluency/96/water.png" alt="Icono Ahorro de Agua" />
-        <h3>Ahorro de Agua</h3>
-        <p>Riego eficiente que cuida el recurso hídrico.</p>
-      </div>
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000" alt="Icono Seguridad" />
-        <h3>Seguridad</h3>
-        <p>Protección con login, cifrado y control de usuarios.</p>
-      </div>
-    </div>
-  </section>
-
-  <section aria-label="Impacto del proyecto">
-    <h2>Impacto</h2>
-    <p>Este sistema ayuda a pequeños productores, escuelas y jardines a optimizar recursos, reducir costos y fomentar la sostenibilidad agrícola.</p>
-  </section>
-
-  <section aria-label="Equipo">
-    <h2>Equipo</h2>
-    <div class="team-member">
-      <h3>Elva Nohemi García Ayala</h3>
-      <p>Líder del Proyecto y Documentación</p>
-    </div>
-    <div class="team-member">
-      <h3>Héctor Salvador Navarro Bochas</h3>
-      <p>Líder Técnico y Programación</p>
-    </div>
-    <div class="team-member">
-      <h3>Luis Daniel Albañil García</h3>
-      <p>Soporte y Pruebas</p>
-    </div>
-  </section>
-
-  <section aria-label="Galería" class="gallery">
-   <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDJX_pk116vnAv8V04KAein3ePKEe6_can7Q&s" alt="Imagen 1" /></a>
-    <a href="#"><urlimagen" alt="Imagen 2" /></a>
-    <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaNEoqOkfFGAvi10HKTFoSX3Bx4RUozB5AVA&s" alt="Imagen 3" /></a>
-  </section>
-
-  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
-    <img id="lightbox-img" src="" alt="" />
-  </div>
-
-  <section aria-label="Datos de humedad">
-    <h2>Datos del Sensor</h2>
-    <p id="sensorData">-- % Humedad</p>
-    <canvas id="humidityChart" width="400" height="200"></canvas>
-  </section>
-
-  <section aria-label="Preguntas Frecuentes">
-    <h2>FAQ</h2>
-
-    <div class="faq-item">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq1">¿Qué sensores utiliza el sistema?</button>
-      <div id="faq1" class="faq-answer" hidden><p>Usamos sensores de humedad del suelo compatibles con microcontroladores ESP32 para garantizar precisión y bajo consumo.</p></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq2">¿Se necesita conexión a internet para monitorear?</button>
-      <div id="faq2" class="faq-answer" hidden><p>El sistema puede funcionar con o sin conexión a internet gracias a su comunicación local y almacenamiento en servidor local.</p></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq3">¿Quién puede usar este sistema?</button>
-      <div id="faq3" class="faq-answer" hidden><p>Está diseñado para pequeños productores, huertos escolares, jardines y desarrolladores interesados en agricultura inteligente.</p></div>
-    </div>
-  </section>
-
-  <section aria-label="Contacto">
-    <h2>Contacto</h2>
-    <form id="contactForm" novalidate>
-      <label for="name">Nombre:</label>
-      <input type="text" id="name" name="name" required placeholder="Tu nombre" />
-      
-      <label for="email">Correo electrónico:</label>
-      <input type="email" id="email" name="email" required placeholder="tu@email.com" />
-      
-      <label for="message">Mensaje:</label>
-      <textarea id="message" name="message" rows="4" required placeholder="Escribe tu mensaje aquí"></textarea>
-      
-      <button type="submit">Enviar</button>
-      <p id="formMessage" aria-live="polite" style="margin-top: 10px; font-weight: 600;"></p>
-    </form>
-  </section>
-</main>
-
-<footer>
-  <div class="social-icons">
-    <a href="https://www.facebook.com/share/176EKaone8/?mibextid=wwXIfr" target="_blank" aria-label="Facebook" rel="noopener noreferrer">
-      <img src="https://img.icons8.com/?size=100&id=62225&format=png&color=000000" alt="Facebook" />
-    </a>
-    <a href="https://youtube.com/@hemmy-2304?si=6qmBqV8vIRfugojz" target="_blank" aria-label="YouTube" rel="noopener noreferrer">
-      <img src="https://img.icons8.com/?size=120&id=37325&format=png&color=000000" alt="YouTube" />
-    </a>
-    <a href="https://www.tiktok.com/@hemmy_19?is_from_webapp=1&sender_device=pc" target="_blank" aria-label="TikTok" rel="noopener noreferrer">
-      <img src="https://img.icons8.com/?size=100&id=jWD8DpTON7FB&format=png&color=000000" alt="TikTok" />
-    </a>
-  </div>
-  <p>© 2025 Sistema Modular Inteligente para Monitoreo de Humedad en Huertos</p>
-</footer>
-
-
-<button id="topBtn" aria-label="Volver arriba">↑</button>
-
-<!-- Librerías -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-
-<script>
-  // Variables globales
-  const topBtn = document.getElementById('topBtn');
-  const langSwitch = document.getElementById('langSwitch');
-  let lang = 'es';
-
-  // Textos para idiomas
-  const texts = {
-    es: {
-      title: "Huerto Inteligente - Sistema Modular de Monitoreo",
-      headerTitle: "Huerto Inteligente",
-      headerSpan: "Sistema Modular de Monitoreo",
-      headerSubtitle: "Tecnología para una agricultura más eficiente y sostenible",
-      btnPrimary: "Conocer más",
-      proyectoTitle: "Proyecto",
-      proyectoDesc: "Este sistema inteligente, modular y de bajo costo permite monitorear la humedad del suelo en huertos mediante sensores IoT, conectividad local y remota, y una plataforma web segura y responsiva. Facilita la toma de decisiones para el riego y cuidado de cultivos, optimizando el uso del agua y reduciendo el riesgo por exceso o déficit hídrico.",
-      visionTitle: "Visión",
-      visionDesc: "Visualizamos un futuro donde nuestro sistema modular sea ampliamente adoptado por pequeños productores y escuelas, permitiendo una agricultura más inteligente, sostenible y adaptada a las necesidades cambiantes del sector. La flexibilidad para agregar más sensores o módulos hace posible la expansión y mejora continua, garantizando soluciones a medida para distintos cultivos y escenarios.",
-      ventajasTitle: "Ventajas",
-      ventajas: [
-        {icon:"https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000", title:"Modular", desc:"Fácil de escalar y adaptar a diferentes huertos."},
-        {icon:"https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000", title:"Monitoreo Remoto", desc:"Consulta datos en tiempo real desde cualquier lugar."},
-        {icon:"https://img.icons8.com/fluency/96/water.png", title:"Ahorro de Agua", desc:"Riego eficiente que cuida el recurso hídrico."},
-        {icon:"https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000", title:"Seguridad", desc:"Protección con login, cifrado y control de usuarios."}
-      ],
-      impactoTitle: "Impacto",
-      impactoDesc: "Este sistema ayuda a pequeños productores, escuelas y jardines a optimizar recursos, reducir costos y fomentar la sostenibilidad agrícola.",
-      equipoTitle: "Equipo",
-      equipo: [
-        {nombre:"Elva Nohemi García Ayala", rol:"Líder del Proyecto y Documentación"},
-        {nombre:"Héctor Salvador Navarro Bochas", rol:"Líder Técnico y Programación"},
-        {nombre:"Luis Daniel Albañil García", rol:"Soporte y Pruebas"}
-      ],
-      galeriaTitle: "Galería",
-      sensorTitle: "Datos del Sensor",
-      faqTitle: "Preguntas Frecuentes",
-      faqs: [
-        {q:"¿Qué sensores utiliza el sistema?", a:"Usamos sensores de humedad del suelo compatibles con microcontroladores ESP32 para garantizar precisión y bajo consumo."},
-        {q:"¿Se necesita conexión a internet para monitorear?", a:"El sistema puede funcionar con o sin conexión a internet gracias a su comunicación local y almacenamiento en servidor local."},
-        {q:"¿Quién puede usar este sistema?", a:"Está diseñado para pequeños productores, huertos escolares, jardines y desarrolladores interesados en agricultura inteligente."}
-      ],
-      contactoTitle: "Contacto",
-      contactoLabels: {name:"Nombre:", email:"Correo electrónico:", message:"Mensaje:"},
-      contactoBtn: "Enviar",
-      contactoSending: "Enviando mensaje...",
-      contactoThanks: "¡Gracias por contactarnos! Responderemos pronto.",
-      contactoError: "Error al enviar el mensaje. Intenta nuevamente.",
-      footerText: "© 2025 Huerto Inteligente. Todos los derechos reservados.",
-      langSwitchBtn: "EN",
-      topBtnAria: "Volver arriba"
-    },
-    en: {
-      title: "Smart Garden - Modular Monitoring System",
-      headerTitle: "Smart Garden",
-      headerSpan: "Modular Monitoring System",
-      headerSubtitle: "Technology for more efficient and sustainable agriculture",
-      btnPrimary: "Learn more",
-      proyectoTitle: "Project",
-      proyectoDesc: "This intelligent, modular, and low-cost system monitors soil moisture in gardens using IoT sensors, local and remote connectivity, and a secure responsive web platform. It facilitates decision making for irrigation and crop care, optimizing water use and reducing risks from excess or deficient moisture.",
-      visionTitle: "Vision",
-      visionDesc: "We envision a future where our modular system is widely adopted by small producers and schools, enabling smarter, sustainable agriculture adapted to the changing needs of the sector. The flexibility to add more sensors or modules allows expansion and continuous improvement, providing tailored solutions for different crops and scenarios.",
-      ventajasTitle: "Advantages",
-      ventajas: [
-        {icon:"https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000", title:"Modular", desc:"Easy to scale and adapt to different gardens."},
-        {icon:"https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000", title:"Remote Monitoring", desc:"Check real-time data from anywhere."},
-        {icon:"https://img.icons8.com/fluency/96/water.png", title:"Water Saving", desc:"Efficient irrigation that protects water resources."},
-        {icon:"https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000", title:"Security", desc:"Protection with login, encryption, and user control."}
-      ],
-      impactoTitle: "Impact",
-      impactoDesc: "This system helps small producers, schools, and gardens optimize resources, reduce costs, and promote sustainable agriculture.",
-      equipoTitle: "Team",
-      equipo: [
-        {nombre:"Elva Nohemi García Ayala", rol:"Project Leader and Documentation"},
-        {nombre:"Héctor Salvador Navarro Bochas", rol:"Technical Leader and Programming"},
-        {nombre:"Luis Daniel Albañil García", rol:"Support and Testing"}
-      ],
-      galeriaTitle: "Gallery",
-      sensorTitle: "Sensor Data",
-      faqTitle: "Frequently Asked Questions",
-      faqs: [
-        {q:"What sensors does the system use?", a:"We use soil moisture sensors compatible with ESP32 microcontrollers to ensure accuracy and low power consumption."},
-        {q:"Is internet connection needed for monitoring?", a:"The system can operate with or without internet connection thanks to local communication and local server storage."},
-        {q:"Who can use this system?", a:"It is designed for small producers, school gardens, and developers interested in smart agriculture."}
-      ],
-      contactoTitle: "Contact",
-      contactoLabels: {name:"Name:", email:"Email:", message:"Message:"},
-      contactoBtn: "Send",
-      contactoSending: "Sending message...",
-      contactoThanks: "Thank you for contacting us! We will respond soon.",
-      contactoError: "Error sending message. Please try again.",
-      footerText: "© 2025 Smart Garden. All rights reserved.",
-      langSwitchBtn: "ES",
-      topBtnAria: "Back to top"
-    }
-  };
-
-  // Actualizar textos dinámicamente
-  function updateTexts() {
-    document.title = texts[lang].title;
-
-    // Header
-    const headerH1 = document.querySelector('header h1');
-    if(headerH1) headerH1.innerHTML = `${texts[lang].headerTitle} <span>${texts[lang].headerSpan}</span>`;
-
-    const headerP = document.querySelector('header p');
-    if(headerP) headerP.textContent = texts[lang].headerSubtitle;
-
-    const btnPrimary = document.querySelector('header a.button-primary');
-    if(btnPrimary) btnPrimary.textContent = texts[lang].btnPrimary;
-
-    // Secciones principales
-    const proyectoSection = document.querySelector('#proyecto');
-    if(proyectoSection){
-      proyectoSection.querySelector('h2').textContent = texts[lang].proyectoTitle;
-      proyectoSection.querySelector('p').textContent = texts[lang].proyectoDesc;
-    }
-
-    const visionSection = document.querySelector('section[aria-label="Visión del Proyecto"], section[aria-label="Vision"]');
-    if(visionSection){
-      visionSection.querySelector('h2').textContent = texts[lang].visionTitle;
-      visionSection.querySelector('p').textContent = texts[lang].visionDesc;
-    }
-
-    // Ventajas
-    const ventajasSection = document.querySelector('section[aria-label="Ventajas del proyecto"], section[aria-label="Advantages"]');
-    if(ventajasSection){
-      ventajasSection.querySelector('h2').textContent = texts[lang].ventajasTitle;
-      const cards = ventajasSection.querySelectorAll('.card');
-      texts[lang].ventajas.forEach((v,i) => {
-        if(cards[i]){
-          cards[i].querySelector('img').src = v.icon;
-          cards[i].querySelector('h3').textContent = v.title;
-          cards[i].querySelector('p').textContent = v.desc;
-        }
-      });
-    }
-
-    // Impacto
-    const impactoSection = document.querySelector('section[aria-label="Impacto del proyecto"], section[aria-label="Impact"]');
-    if(impactoSection){
-      impactoSection.querySelector('h2').textContent = texts[lang].impactoTitle;
-      impactoSection.querySelector('p').textContent = texts[lang].impactoDesc;
-    }
-
-    // Equipo
-    const equipoSection = document.querySelector('section[aria-label="Equipo"], section[aria-label="Team"]');
-    if(equipoSection){
-      equipoSection.querySelector('h2').textContent = texts[lang].equipoTitle;
-      const members = equipoSection.querySelectorAll('.team-member');
-      texts[lang].equipo.forEach((m,i) => {
-        if(members[i]){
-          members[i].querySelector('h3').textContent = m.nombre;
-          members[i].querySelector('p').textContent = m.rol;
-        }
-      });
-    }
-
-    // Galería
-    const galeriaSection = document.querySelector('section[aria-label="Galería"], section[aria-label="Gallery"]');
-    if(galeriaSection){
-      galeriaSection.querySelector('h2').textContent = texts[lang].galeriaTitle;
-    }
-
-    // Sensor
-    const sensorSection = document.querySelector('section[aria-label="Datos de humedad"], section[aria-label="Sensor Data"]');
-    if(sensorSection){
-      sensorSection.querySelector('h2').textContent = texts[lang].sensorTitle;
-    }
-
-    // FAQ
-    const faqSection = document.querySelector('section[aria-label="Preguntas Frecuentes"], section[aria-label="Frequently Asked Questions"]');
-    if(faqSection){
-      faqSection.querySelector('h2').textContent = texts[lang].faqTitle;
-      const faqBtns = faqSection.querySelectorAll('.faq-question');
-      texts[lang].faqs.forEach((faq,i) => {
-        if(faqBtns[i]){
-          faqBtns[i].textContent = faq.q;
-          const answer = document.getElementById(faqBtns[i].getAttribute('aria-controls'));
-          if(answer) answer.querySelector('p').textContent = faq.a;
-        }
-      });
-    }
-
-    // Contacto
-    const contactoSection = document.querySelector('section[aria-label="Contacto"], section[aria-label="Contact"]');
-    if(contactoSection){
-      contactoSection.querySelector('h2').textContent = texts[lang].contactoTitle;
-      contactoSection.querySelector('label[for="name"]').textContent = texts[lang].contactoLabels.name;
-      contactoSection.querySelector('label[for="email"]').textContent = texts[lang].contactoLabels.email;
-      contactoSection.querySelector('label[for="message"]').textContent = texts[lang].contactoLabels.message;
-      contactoSection.querySelector('button[type="submit"]').textContent = texts[lang].contactoBtn;
-    }
-
-    // Footer
-    const footerP = document.querySelector('footer p');
-    if(footerP) footerP.textContent = texts[lang].footerText;
-
-    // Botones y aria-labels
-    if(langSwitch) langSwitch.textContent = texts[lang].langSwitchBtn;
-    if(topBtn) topBtn.setAttribute('aria-label', texts[lang].topBtnAria);
-  }
-
-  // Cambiar idioma
-  if(langSwitch){
-    langSwitch.addEventListener('click', () => {
-      lang = lang === 'es' ? 'en' : 'es';
-      document.documentElement.lang = lang;
-      updateTexts();
-    });
-  }
-
-  // Botón volver arriba
-  window.addEventListener('scroll', () => {
-    if(topBtn){
-      topBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
-    }
-  });
-  if(topBtn){
-    topBtn.addEventListener('click', () => {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    });
-  }
-
-  // Animación galería al scroll
-  const images = document.querySelectorAll('.gallery img');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.2 });
-  images.forEach(img => observer.observe(img));
-
-  // Lightbox
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  document.querySelectorAll('.gallery a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      if(lightbox && lightboxImg){
-        lightbox.style.display = 'flex';
-        lightboxImg.src = link.querySelector('img').src;
-        lightboxImg.alt = link.querySelector('img').alt;
-      }
-    });
-  });
-  if(lightbox){
-    lightbox.addEventListener('click', () => {
-      lightbox.style.display = 'none';
-    });
-  }
-
-  // Simulación datos sensor + gráfico
-  const sensorDataDiv = document.getElementById('sensorData');
-  const ctx = document.getElementById('humidityChart')?.getContext('2d');
-
-  let labels = [];
-  let dataPoints = [];
-  const maxPoints = 12;
-
-  const humidityChart = ctx ? new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: lang === 'es' ? 'Humedad (%)' : 'Humidity (%)',
-        data: dataPoints,
-        borderColor: '#43a047',
-        backgroundColor: 'rgba(67, 160, 71, 0.2)',
-        tension: 0.3,
-        fill: true,
-        pointRadius: 4,
-        pointHoverRadius: 7,
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { min: 0, max: 100, ticks: { stepSize: 10 } }
-      },
-      plugins: {
-        legend: { display: true, labels: {color: '#2e7d32'} }
-      }
-    }
-  }) : null;
-
-  function getRandomHumidity() {
-    return (30 + Math.random() * 40).toFixed(1);
-  }
-
-  function updateSensorData() {
-    const humidity = getRandomHumidity();
-    const now = new Date();
-    const timeLabel = now.toLocaleTimeString();
-
-    if(sensorDataDiv) sensorDataDiv.textContent = humidity + (lang === 'es' ? ' % Humedad' : ' % Humidity');
-
-    if(labels.length >= maxPoints) {
-      labels.shift();
-      dataPoints.shift();
-    }
-    labels.push(timeLabel);
-    dataPoints.push(humidity);
-
-    if(humidityChart) {
-      humidityChart.data.labels = labels;
-      humidityChart.data.datasets[0].label = lang === 'es' ? 'Humedad (%)' : 'Humidity (%)';
-      humidityChart.data.datasets[0].data = dataPoints;
-      humidityChart.update();
-    }
-  }
-
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -772,211 +6,473 @@
   <title>Huerto Inteligente - Sistema Modular de Monitoreo</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
-    /* Aquí va todo tu CSS (omitido para brevedad, ya lo tienes completo y correcto) */
-    /* ... */
+    /* Aquí van todos tus estilos CSS, incluyendo mejoras visuales */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background-color: #f4f8f5;
+      color: #333;
+      scroll-behavior: smooth;
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: #2e7d32;
+    }
+    a:hover, button:hover {
+      color: #43a047;
+    }
+    header, footer {
+      background: linear-gradient(to right, #43a047, #2e7d32);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+    header h1 {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    header h1 span {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-top: 5px;
+      color: #a5d6a7;
+      font-style: italic;
+    }
+    .button-primary {
+      background: white;
+      color: #2e7d32;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+      display: inline-block;
+    }
+    .button-primary:hover {
+      background: #c8e6c9;
+      transform: scale(1.05);
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    h2 {
+      color: #2e7d32;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease, opacity 0.6s ease;
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    .gallery img.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    #lightbox {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.8);
+      display:none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 8px;
+    }
+    #topBtn, #langSwitch {
+      position: fixed;
+      z-index: 999;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #topBtn {
+      bottom: 20px;
+      right: 20px;
+      background: #43a047;
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      display: none;
+    }
+    #langSwitch {
+      top: 10px;
+      right: 10px;
+      background: #43a047;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+    }
   </style>
 </head>
 <body>
+  <button id="langSwitch" aria-label="Cambiar idioma">EN</button>
+  <header>
+    <h1>Huerto Inteligente <span>Sistema Modular de Monitoreo</span></h1>
+    <p>Tecnología para una agricultura más eficiente y sostenible</p>
+    <a href="#proyecto" class="button-primary">Conocer más</a>
+  </header>
+  <main>
+    <section id="proyecto"><h2>Proyecto</h2><p></p></section>
+    <section aria-label="Visión del Proyecto"><h2>Visión</h2><p></p></section>
+    <section aria-label="Ventajas del proyecto"><h2>Ventajas</h2><div class="card-container"></div></section>
+    <section aria-label="Impacto del proyecto"><h2>Impacto</h2><p></p></section>
+    <section aria-label="Equipo"><h2>Equipo</h2><div class="team-container"></div></section>
+    <section aria-label="Galería" class="gallery">
+      <a href="#"><img src="https://source.unsplash.com/400x300/?garden" alt="Imagen 1" /></a>
+      <a href="#"><img src="https://source.unsplash.com/400x300/?plants" alt="Imagen 2" /></a>
+      <a href="#"><img src="https://source.unsplash.com/400x300/?agriculture" alt="Imagen 3" /></a>
+    </section>
+    <div id="lightbox"><img id="lightbox-img" src="" alt="" /></div>
+    <section aria-label="Datos de humedad"><h2>Datos del Sensor</h2><p id="sensorData">-- % Humedad</p><canvas id="humidityChart" width="400" height="200"></canvas></section>
+    <section aria-label="Preguntas Frecuentes"><h2>FAQ</h2><div id="faq-container"></div></section>
+    <section aria-label="Contacto">
+      <h2>Contacto</h2>
+      <form id="contactForm" novalidate>
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required placeholder="Tu nombre" />
+        <label for="email">Correo electrónico:</label>
+        <input type="email" id="email" name="email" required placeholder="tu@email.com" />
+        <label for="message">Mensaje:</label>
+        <textarea id="message" name="message" rows="4" required placeholder="Escribe tu mensaje aquí"></textarea>
+        <button type="submit">Enviar</button>
+        <p id="formMessage" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <div class="social-icons"></div>
+    <p>© 2025 Sistema Modular Inteligente para Monitoreo de Humedad en Huertos</p>
+  </footer>
+  <button id="topBtn" aria-label="Volver arriba">↑</button>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    const langSwitch = document.getElementById('langSwitch');
+    const topBtn = document.getElementById('topBtn');
+    let lang = 'es';
+    const texts = {
+      es: {
+        title: "Huerto Inteligente - Sistema Modular de Monitoreo",
+        headerTitle: "Huerto Inteligente",
+        headerSpan: "Sistema Modular de Monitoreo",
+        headerSubtitle: "Tecnología para una agricultura más eficiente y sostenible",
+        btnPrimary: "Conocer más",
+        proyectoTitle: "Proyecto",
+        proyectoDesc: "Este sistema inteligente...",
+        visionTitle: "Visión",
+        visionDesc: "Visualizamos un futuro...",
+        ventajasTitle: "Ventajas",
+        ventajas: [
+          {title:"Modular", desc:"Fácil de escalar...", icon:"https://img.icons8.com/ios/50/modular.png"},
+          {title:"Monitoreo Remoto", desc:"Consulta datos...", icon:"https://img.icons8.com/ios/50/remote.png"}
+        ],
+        impactoTitle: "Impacto",
+               impactoDesc: "Este sistema ayuda a pequeños productores, escuelas y jardines a optimizar recursos, reducir costos y fomentar la sostenibilidad agrícola.",
+        equipoTitle: "Equipo",
+        equipo: [
+          {nombre:"Elva Nohemi García Ayala", rol:"Líder del Proyecto y Documentación"},
+          {nombre:"Héctor Salvador Navarro Bochas", rol:"Líder Técnico y Programación"},
+          {nombre:"Luis Daniel Albañil García", rol:"Soporte y Pruebas"}
+        ],
+        galeriaTitle: "Galería",
+        sensorTitle: "Datos del Sensor",
+        faqTitle: "Preguntas Frecuentes",
+        faqs: [
+          {q:"¿Qué sensores utiliza el sistema?", a:"Usamos sensores de humedad del suelo compatibles con microcontroladores ESP32 para garantizar precisión y bajo consumo."},
+          {q:"¿Se necesita conexión a internet para monitorear?", a:"El sistema puede funcionar con o sin conexión a internet gracias a su comunicación local y almacenamiento en servidor local."},
+          {q:"¿Quién puede usar este sistema?", a:"Está diseñado para pequeños productores, huertos escolares, jardines y desarrolladores interesados en agricultura inteligente."}
+        ],
+        contactoTitle: "Contacto",
+        contactoLabels: {name:"Nombre:", email:"Correo electrónico:", message:"Mensaje:"},
+        contactoBtn: "Enviar",
+        contactoSending: "Enviando mensaje...",
+        contactoThanks: "¡Gracias por contactarnos! Responderemos pronto.",
+        contactoError: "Error al enviar el mensaje. Intenta nuevamente.",
+        footerText: "© 2025 Huerto Inteligente. Todos los derechos reservados.",
+        langSwitchBtn: "EN",
+        topBtnAria: "Volver arriba"
+      },
+      en: {
+        title: "Smart Garden - Modular Monitoring System",
+        headerTitle: "Smart Garden",
+        headerSpan: "Modular Monitoring System",
+        headerSubtitle: "Technology for more efficient and sustainable agriculture",
+        btnPrimary: "Learn more",
+        proyectoTitle: "Project",
+        proyectoDesc: "This intelligent, modular, and low-cost system monitors soil moisture in gardens using IoT sensors, local and remote connectivity, and a secure responsive web platform...",
+        visionTitle: "Vision",
+        visionDesc: "We envision a future where our modular system is widely adopted by small producers and schools...",
+        ventajasTitle: "Advantages",
+        ventajas: [
+          {title:"Modular", desc:"Easy to scale and adapt to different gardens.", icon:"https://img.icons8.com/ios/50/modular.png"},
+          {title:"Remote Monitoring", desc:"Check real-time data from anywhere.", icon:"https://img.icons8.com/ios/50/remote.png"}
+        ],
+        impactoTitle: "Impact",
+        impactoDesc: "This system helps small producers, schools, and gardens optimize resources, reduce costs, and promote sustainable agriculture.",
+        equipoTitle: "Team",
+        equipo: [
+          {nombre:"Elva Nohemi García Ayala", rol:"Project Leader and Documentation"},
+          {nombre:"Héctor Salvador Navarro Bochas", rol:"Technical Leader and Programming"},
+          {nombre:"Luis Daniel Albañil García", rol:"Support and Testing"}
+        ],
+        galeriaTitle: "Gallery",
+        sensorTitle: "Sensor Data",
+        faqTitle: "Frequently Asked Questions",
+        faqs: [
+          {q:"What sensors does the system use?", a:"We use soil moisture sensors compatible with ESP32 microcontrollers..."},
+          {q:"Is internet connection needed for monitoring?", a:"The system can operate with or without internet connection..."},
+          {q:"Who can use this system?", a:"It is designed for small producers, school gardens, and developers interested in smart agriculture."}
+        ],
+        contactoTitle: "Contact",
+        contactoLabels: {name:"Name:", email:"Email:", message:"Message:"},
+        contactoBtn: "Send",
+        contactoSending: "Sending message...",
+        contactoThanks: "Thank you for contacting us! We will respond soon.",
+        contactoError: "Error sending message. Please try again.",
+        footerText: "© 2025 Smart Garden. All rights reserved.",
+        langSwitchBtn: "ES",
+        topBtnAria: "Back to top"
+      }
+    };
 
-<button id="langSwitch" aria-label="Cambiar idioma">EN</button>
+    function updateTexts() {
+      document.title = texts[lang].title;
+      document.querySelector('header h1').innerHTML = `${texts[lang].headerTitle} <span>${texts[lang].headerSpan}</span>`;
+      document.querySelector('header p').textContent = texts[lang].headerSubtitle;
+      document.querySelector('.button-primary').textContent = texts[lang].btnPrimary;
+      document.querySelector('#proyecto h2').textContent = texts[lang].proyectoTitle;
+      document.querySelector('#proyecto p').textContent = texts[lang].proyectoDesc;
+      document.querySelector('section[aria-label="Visión del Proyecto"] h2').textContent = texts[lang].visionTitle;
+      document.querySelector('section[aria-label="Visión del Proyecto"] p').textContent = texts[lang].visionDesc;
+      document.querySelector('section[aria-label="Ventajas del proyecto"] h2').textContent = texts[lang].ventajasTitle;
+      const cards = document.querySelectorAll('.card-container .card');
+      cards.forEach((card, i) => {
+        const v = texts[lang].ventajas[i];
+        card.querySelector('img').src = v.icon;
+        card.querySelector('h3').textContent = v.title;
+        card.querySelector('p').textContent = v.desc;
+      });
+      document.querySelector('section[aria-label="Impacto del proyecto"] h2').textContent = texts[lang].impactoTitle;
+      document.querySelector('section[aria-label="Impacto del proyecto"] p').textContent = texts[lang].impactoDesc;
+      document.querySelector('section[aria-label="Equipo"] h2').textContent = texts[lang].equipoTitle;
+      const team = document.querySelectorAll('.team-container .team-member');
+      team.forEach((member, i) => {
+        member.querySelector('h3').textContent = texts[lang].equipo[i].nombre;
+        member.querySelector('p').textContent = texts[lang].equipo[i].rol;
+      });
+      document.querySelector('section[aria-label="Galería"] h2').textContent = texts[lang].galeriaTitle;
+      document.querySelector('section[aria-label="Datos de humedad"] h2').textContent = texts[lang].sensorTitle;
+      document.querySelector('section[aria-label="Preguntas Frecuentes"] h2').textContent = texts[lang].faqTitle;
+      const faqBtns = document.querySelectorAll('.faq-question');
+      faqBtns.forEach((btn, i) => {
+        btn.textContent = texts[lang].faqs[i].q;
+        const answer = document.getElementById(btn.getAttribute('aria-controls'));
+        answer.querySelector('p').textContent = texts[lang].faqs[i].a;
+      });
+      document.querySelector('section[aria-label="Contacto"] h2').textContent = texts[lang].contactoTitle;
+      document.querySelector('label[for="name"]').textContent = texts[lang].contactoLabels.name;
+      document.querySelector('label[for="email"]').textContent = texts[lang].contactoLabels.email;
+      document.querySelector('label[for="message"]').textContent = texts[lang].contactoLabels.message;
+      document.getElementById('name').placeholder = lang === 'es' ? 'Tu nombre' : 'Your name';
+      document.getElementById('email').placeholder = lang === 'es' ? 'tu@email.com' : 'your@email.com';
+      document.getElementById('message').placeholder = lang === 'es' ? 'Escribe tu mensaje aquí' : 'Write your message here';
+      document.querySelector('button[type="submit"]').textContent = texts[lang].contactoBtn;
+      document.querySelector('footer p').textContent = texts[lang].footerText;
+      langSwitch.textContent = texts[lang].langSwitchBtn;
+      topBtn.setAttribute('aria-label', texts[lang].topBtnAria);
+    }
 
-<header>
-  <h1>Huerto Inteligente <span>Sistema Modular de Monitoreo</span></h1>
-  <p>Tecnología para una agricultura más eficiente y sostenible</p>
-  <a href="#proyecto" class="button-primary">Conocer más</a>
-</header>
-
-<main>
-  <!-- Secciones: Proyecto, Visión, Ventajas, Impacto, Equipo, Galería, Sensor, FAQ, Contacto -->
-  <!-- Ya las tienes completas y bien estructuradas -->
-  <!-- ... -->
-</main>
-
-<footer>
-  <div class="social-icons">
-    <!-- Íconos de redes sociales -->
-  </div>
-  <p>© 2025 Sistema Modular Inteligente para Monitoreo de Humedad en Huertos</p>
-</footer>
-
-<button id="topBtn" aria-label="Volver arriba">↑</button>
-
-<!-- Librerías -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-
-<script>
-  // Tu objeto de textos en español e inglés
-  const texts = {
-    es: { /* ... */ },
-    en: { /* ... */ }
-  };
-
-  let lang = 'es';
-  const topBtn = document.getElementById('topBtn');
-  const langSwitch = document.getElementById('langSwitch');
-
-  function updateTexts() {
-    document.title = texts[lang].title;
-    // Actualiza todas las secciones dinámicamente
-    // ... (ya lo tienes completo)
-  }
-
-  if(langSwitch){
     langSwitch.addEventListener('click', () => {
       lang = lang === 'es' ? 'en' : 'es';
       document.documentElement.lang = lang;
       updateTexts();
     });
-  }
 
-  window.addEventListener('scroll', () => {
-    if(topBtn){
+    window.addEventListener('scroll', () => {
       topBtn.style.display = window.scrollY > 200 ? 'block' : 'none';
-    }
-  });
+    });
 
-  if(topBtn){
     topBtn.addEventListener('click', () => {
       window.scrollTo({top: 0, behavior: 'smooth'});
     });
-  }
 
-  // Galería animada
-  const images = document.querySelectorAll('.gallery img');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.2 });
-  images.forEach(img => observer.observe(img));
-
-  // Lightbox
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  document.querySelectorAll('.gallery a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      if(lightbox && lightboxImg){
-        lightbox.style.display = 'flex';
-        lightboxImg.src = link.querySelector('img').src;
-        lightboxImg.alt = link.querySelector('img').alt;
-      }
-    });
-  });
-  if(lightbox){
-    lightbox.addEventListener('click', () => {
-      lightbox.style.display = 'none';
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') lightbox.style.display = 'none';
-    });
-  }
-
-  // Sensor + gráfico
-  const sensorDataDiv = document.getElementById('sensorData');
-  const ctx = document.getElementById('humidityChart')?.getContext('2d');
-  let labels = [], dataPoints = [], maxPoints = 12;
-
-  const humidityChart = ctx ? new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: lang === 'es' ? 'Humedad (%)' : 'Humidity (%)',
-        data: dataPoints,
-        borderColor: '#43a047',
-        backgroundColor: 'rgba(67, 160, 71, 0.2)',
-        tension: 0.3,
-        fill: true,
-        pointRadius: 4,
-        pointHoverRadius: 7,
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { min: 0, max: 100, ticks: { stepSize: 10 } }
-      },
-      plugins: {
-        legend: { display: true, labels: {color: '#2e7d32'} }
-      }
-    }
-  }) : null;
-
-  function getRandomHumidity() {
-    return (30 + Math.random() * 40).toFixed(1);
-  }
-
-  function updateSensorData() {
-    const humidity = getRandomHumidity();
-    const now = new Date();
-    const timeLabel = now.toLocaleTimeString();
-
-    if(sensorDataDiv) sensorDataDiv.textContent = humidity + (lang === 'es' ? ' % Humedad' : ' % Humidity');
-
-    if(labels.length >= maxPoints) {
-      labels.shift();
-      dataPoints.shift();
-    }
-    labels.push(timeLabel);
-    dataPoints.push(humidity);
-
-    if(humidityChart) {
-      humidityChart.data.labels = labels;
-      humidityChart.data.datasets[0].label = lang === 'es' ? 'Humedad (%)' : 'Humidity (%)';
-      humidityChart.data.datasets[0].data = dataPoints;
-      humidityChart.update();
-    }
-  }
-
-  updateTexts();
-  updateSensorData();
-  setInterval(updateSensorData, 5000);
-
-  // FAQ toggle
-  document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', !expanded);
-      const answer = document.getElementById(btn.getAttribute('aria-controls'));
-      if (!expanded) {
-        answer.hidden = false;
-        answer.style.maxHeight = answer.scrollHeight + 'px';
-        btn.classList.add('active');
-      } else {
-        answer.style.maxHeight = null;
-        setTimeout(() => { answer.hidden = true; }, 350);
-        btn.classList.remove('active');
-      }
-    });
-  });
-
-  // EmailJS
-  emailjs.init("WvlxNjRXrVa36vEQ4");
-  const contactForm = document.getElementById('contactForm');
-  const formMessage = document.getElementById('formMessage');
-
-  if(contactForm){
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      formMessage.textContent = texts[lang].contactoSending;
-      formMessage.style.color = '#2e7d32';
-
-      emailjs.sendForm('service_mc5m6mt', 'template_x2rqp4l', this)
-        .then(() => {
-          formMessage.textContent = texts[lang].contactoThanks;
-          contactForm.reset();
-        }, (error) => {
-          formMessage.textContent = texts[lang].contactoError;
-          formMessage.style.color = 'red';
-          console.error('Error:', error);
+    document.querySelectorAll('.gallery img').forEach(img => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) img.classList.add('visible');
         });
+      }, { threshold: 0.2 });
+      observer.observe(img);
     });
-  }
-</script>
 
+    const lightbox = document.getElementById('lightbox');
+    const light
+    updateTexts();
+
+    // Sensor + gráfico
+    const sensorDataDiv = document.getElementById('sensorData');
+    const ctx = document.getElementById('humidityChart')?.getContext('2d');
+    let labels = [], dataPoints = [], maxPoints = 12;
+
+    const humidityChart = ctx ? new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: lang === 'es' ? 'Humedad (%)' : 'Humidity (%)',
+          data: dataPoints,
+          borderColor: '#43a047',
+          backgroundColor: 'rgba(67, 160, 71, 0.2)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 7,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 0, max: 100, ticks: { stepSize: 10 } }
+        },
+        plugins: {
+          legend: { display: true, labels: {color: '#2e7d32'} }
+        }
+      }
+    }) : null;
+
+    function getRandomHumidity() {
+      return (30 + Math.random() * 40).toFixed(1);
+    }
+
+    function updateSensorData() {
+      const humidity = getRandomHumidity();
+      const now = new Date();
+      const timeLabel = now.toLocaleTimeString();
+
+      if(sensorDataDiv) sensorDataDiv.textContent = humidity + (lang === 'es' ? ' % Humedad' : ' % Humidity');
+
+      if(labels.length >= maxPoints) {
+        labels.shift();
+        dataPoints.shift();
+      }
+      labels.push(timeLabel);
+      dataPoints.push(humidity);
+
+      if(humidityChart) {
+        humidityChart.data.labels = labels;
+        humidityChart.data.datasets[0].label = lang === 'es' ? 'Humedad (%)' : 'Humidity (%)';
+        humidityChart.data.datasets[0].data = dataPoints;
+        humidityChart.update();
+      }
+    }
+
+    updateSensorData();
+    setInterval(updateSensorData, 5000);
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        const answer = document.getElementById(btn.getAttribute('aria-controls'));
+        if (!expanded) {
+          answer.hidden = false;
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          btn.classList.add('active');
+        } else {
+          answer.style.maxHeight = null;
+          setTimeout(() => { answer.hidden = true; }, 350);
+          btn.classList.remove('active');
+        }
+      });
+    });
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.gallery a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        if(lightbox && lightboxImg){
+          lightbox.style.display = 'flex';
+          lightboxImg.src = link.querySelector('img').src;
+          lightboxImg.alt = link.querySelector('img').alt;
+        }
+      });
+    });
+    if(lightbox){
+      lightbox.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') lightbox.style.display = 'none';
+      });
+    }
+
+    // EmailJS
+    emailjs.init("WvlxNjRXrVa36vEQ4");
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+
+    if(contactForm){
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        formMessage.textContent = texts[lang].contactoSending;
+        formMessage.style.color = '#2e7d32';
+
+        emailjs.sendForm('service_mc5m6mt', 'template_x2rqp4l', this)
+          .then(() => {
+            formMessage.textContent = texts[lang].contactoThanks;
+            contactForm.reset();
+          }, (error) => {
+            formMessage.textContent = texts[lang].contactoError;
+            formMessage.style.color = 'red';
+            console.error('Error:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
