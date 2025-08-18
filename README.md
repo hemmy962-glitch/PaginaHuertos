@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
@@ -65,26 +66,44 @@
     text-align: center;
     margin-bottom: 30px;
   }
+ .card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas */
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media(max-width: 800px) {
   .card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tabletas */
   }
-  .card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+}
+
+@media(max-width: 500px) {
+  .card-container {
+    grid-template-columns: 1fr; /* 1 columna en móviles */
   }
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  .card img {
-    width: 50px;
-    margin-bottom: 10px;
-  }
+}
+
+
   .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
@@ -329,31 +348,42 @@
     <p>Visualizamos un futuro donde nuestro sistema modular sea ampliamente adoptado por pequeños productores y escuelas, permitiendo una agricultura más inteligente, sostenible y adaptada a las necesidades cambiantes del sector. La flexibilidad para agregar más sensores o módulos hace posible la expansión y mejora continua, garantizando soluciones a medida para distintos cultivos y escenarios.</p>
   </section>
 
-  <section aria-label="Ventajas del proyecto">
-    <h2>Ventajas</h2>
-    <div class="card-container">
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000" alt="Icono Modular" />
-        <h3>Modular</h3>
-        <p>Fácil de escalar y adaptar a diferentes huertos.</p>
-      </div>
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000" alt="Icono Monitoreo Remoto" />
-        <h3>Monitoreo Remoto</h3>
-        <p>Consulta datos en tiempo real desde cualquier lugar.</p>
-      </div>
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/fluency/96/water.png" alt="Icono Ahorro de Agua" />
-        <h3>Ahorro de Agua</h3>
-        <p>Riego eficiente que cuida el recurso hídrico.</p>
-      </div>
-      <div class="card" role="article">
-        <img src="https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000" alt="Icono Seguridad" />
-        <h3>Seguridad</h3>
-        <p>Protección con login, cifrado y control de usuarios.</p>
-      </div>
+ <section aria-label="Ventajas del proyecto">
+  <h2>Ventajas</h2>
+  <div class="card-container">
+    <div class="card" role="article">
+      <img src="https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000" alt="Modular" />
+      <h3>Modular</h3>
+      <p>Fácil de escalar y adaptar a diferentes huertos.</p>
     </div>
-  </section>
+    <div class="card" role="article">
+      <img src="https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000" alt="Monitoreo Remoto" />
+      <h3>Monitoreo Remoto</h3>
+      <p>Consulta datos en tiempo real desde cualquier lugar.</p>
+    </div>
+    <div class="card" role="article">
+      <img src="https://img.icons8.com/fluency/96/water.png" alt="Ahorro de Agua" />
+      <h3>Ahorro de Agua</h3>
+      <p>Riego eficiente que cuida el recurso hídrico.</p>
+    </div>
+    <div class="card" role="article">
+      <img src="https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000" alt="Seguridad" />
+      <h3>Seguridad</h3>
+      <p>Protección con login, cifrado y control de usuarios.</p>
+    </div>
+    <div class="card" role="article">
+      <img src="https://img.icons8.com/?size=100&id=12345&format=png&color=000000" alt="Fácil de usar" />
+      <h3>Fácil de usar</h3>
+      <p>Interfaz intuitiva y sencilla para todos los usuarios.</p>
+    </div>
+    <div class="card" role="article">
+      <img src="https://img.icons8.com/?size=100&id=67890&format=png&color=000000" alt="Expansible" />
+      <h3>Expansible</h3>
+      <p>Posibilidad de agregar más módulos y sensores en el futuro.</p>
+    </div>
+  </div>
+</section>
+
 
   <section aria-label="Impacto del proyecto">
     <h2>Impacto</h2>
@@ -378,10 +408,17 @@
 
   <section aria-label="Galería" class="gallery">
     <h2>Galería</h2>
-    <a href="#"><img src="https://via.placeholder.com/100?text=Imagen1" alt="Imagen 1" /></a>
-    <a href="#"><img src="https://via.placeholder.com/100?text=Imagen2" alt="Imagen 2" /></a>
-    <a href="#"><img src="https://via.placeholder.com/100?text=Imagen3" alt="Imagen 3" /></a>
-  </section>
+    <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL226GPDjGiNXkUGUV5Dvcx0xVsXDJMQJFVg&s" alt="Imagen 1" /></a>
+    <a href="#"><img src="https://canalsenior.es/wp-content/uploads/2021/05/162446444717020210630-iot-agricultura.jpg" alt="Imagen 2" /></a>
+    <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKkF1d8ZcKQ6P9dw1-3dKG2dV1OSrzfBjOng&s" alt="Imagen 3" /></a>
+    <a href="#"><img src="https://www.tecneu.com/cdn/shop/files/sensor-de-humedad-de-tierra-suelo-200579.jpg?v=1750204517&width=720" alt="Imagen 4" /></a>
+    <a href="#"><img src="https://m.media-amazon.com/images/I/31H17HFJZIL._UF350,350_QL80_.jpg" alt="Imagen 5" /></a>
+    <a href="#"><img src="https://cdn.portalfruticola.com/2025/04/riegointeligente-1024x683.jpg" alt="Imagen 6" /></a>
+    <a href="#"><img src="https://agroingeniacanarias.com/wp-content/uploads/2020/06/ingenieros-agricolas-imprescindibles-agricultura-de-precision-1080x675.jpg" alt="Imagen 7" /></a>
+    <a href="#"><img src="https://cdn.visionfruticola.com/2024/07/shutterstock_2439322953-1296x700.webp" alt="Imagen 8" /></a>
+    <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_Jro-WbYfkSF5oR4gP4tgZD7TBQZiZzjF3w&s" alt="Imagen 9" /></a>
+
+</section>
 
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
     <img id="lightbox-img" src="" alt="" />
@@ -470,13 +507,15 @@
       proyectoDesc: "Este sistema inteligente, modular y de bajo costo permite monitorear la humedad del suelo en huertos mediante sensores IoT, conectividad local y remota, y una plataforma web segura y responsiva. Facilita la toma de decisiones para el riego y cuidado de cultivos, optimizando el uso del agua y reduciendo el riesgo por exceso o déficit hídrico.",
       visionTitle: "Visión",
       visionDesc: "Visualizamos un futuro donde nuestro sistema modular sea ampliamente adoptado por pequeños productores y escuelas, permitiendo una agricultura más inteligente, sostenible y adaptada a las necesidades cambiantes del sector. La flexibilidad para agregar más sensores o módulos hace posible la expansión y mejora continua, garantizando soluciones a medida para distintos cultivos y escenarios.",
-      ventajasTitle: "Ventajas",
-      ventajas: [
-        {icon:"https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000", title:"Modular", desc:"Fácil de escalar y adaptar a diferentes huertos."},
-        {icon:"https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000", title:"Monitoreo Remoto", desc:"Consulta datos en tiempo real desde cualquier lugar."},
-        {icon:"https://img.icons8.com/fluency/96/water.png", title:"Ahorro de Agua", desc:"Riego eficiente que cuida el recurso hídrico."},
-        {icon:"https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000", title:"Seguridad", desc:"Protección con login, cifrado y control de usuarios."}
-      ],
+     ventajasTitle: "Ventajas",
+ventajas: [
+  {icon:"https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000", title:"Modular", desc:"Fácil de escalar y adaptar a diferentes huertos."},
+  {icon:"https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000", title:"Monitoreo Remoto", desc:"Consulta datos en tiempo real desde cualquier lugar."},
+  {icon:"https://img.icons8.com/fluency/96/water.png", title:"Ahorro de Agua", desc:"Riego eficiente que cuida el recurso hídrico."},
+  {icon:"https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000", title:"Seguridad", desc:"Protección con login, cifrado y control de usuarios."},
+  {icon:"https://img.icons8.com/?size=100&id=79056&format=png&color=000000", title:"Alertas Inteligentes", desc:"Recibe notificaciones cuando la humedad es baja o hay condiciones críticas en el huerto."},
+  {icon:"https://img.icons8.com/?size=100&id=97612&format=png&color=000000", title:"Fomenta la Comunidad", desc:"Ideal para huertos escolares o urbanos, promoviendo colaboración y aprendizaje."}
+],
       impactoTitle: "Impacto",
       impactoDesc: "Este sistema ayuda a pequeños productores, escuelas y jardines a optimizar recursos, reducir costos y fomentar la sostenibilidad agrícola.",
       equipoTitle: "Equipo",
@@ -513,13 +552,15 @@
       proyectoDesc: "This intelligent, modular, and low-cost system monitors soil moisture in gardens using IoT sensors, local and remote connectivity, and a secure responsive web platform. It facilitates decision making for irrigation and crop care, optimizing water use and reducing risks from excess or deficient moisture.",
       visionTitle: "Vision",
       visionDesc: "We envision a future where our modular system is widely adopted by small producers and schools, enabling smarter, sustainable agriculture adapted to the changing needs of the sector. The flexibility to add more sensors or modules allows expansion and continuous improvement, providing tailored solutions for different crops and scenarios.",
-      ventajasTitle: "Advantages",
-      ventajas: [
-        {icon:"https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000", title:"Modular", desc:"Easy to scale and adapt to different gardens."},
-        {icon:"https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000", title:"Remote Monitoring", desc:"Check real-time data from anywhere."},
-        {icon:"https://img.icons8.com/fluency/96/water.png", title:"Water Saving", desc:"Efficient irrigation that protects water resources."},
-        {icon:"https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000", title:"Security", desc:"Protection with login, encryption, and user control."}
-      ],
+ventajasTitle: "Advantages",
+ventajas: [
+  {icon:"https://img.icons8.com/?size=100&id=zzlvMAxv9KKB&format=png&color=000000", title:"Modular", desc:"Easy to scale and adapt to different gardens."},
+  {icon:"https://img.icons8.com/?size=100&id=hnc1VnzGkyTd&format=png&color=000000", title:"Remote Monitoring", desc:"Check real-time data from anywhere."},
+  {icon:"https://img.icons8.com/fluency/96/water.png", title:"Water Saving", desc:"Efficient irrigation that protects water resources."},
+  {icon:"https://img.icons8.com/?size=100&id=Ykiu3xrXkppF&format=png&color=000000", title:"Security", desc:"Protection with login, encryption, and user control."},
+  {icon:"https://img.icons8.com/?size=100&id=79056&format=png&color=000000", title:"Smart Alerts", desc:"Receive notifications when soil moisture is low or conditions are critical."},
+  {icon:"https://img.icons8.com/?size=100&id=97612&format=png&color=000000", title:"Community Focus", desc:"Ideal for school or urban gardens, promoting collaboration and learning."}
+],
       impactoTitle: "Impact",
       impactoDesc: "This system helps small producers, schools, and gardens optimize resources, reduce costs, and promote sustainable agriculture.",
       equipoTitle: "Team",
